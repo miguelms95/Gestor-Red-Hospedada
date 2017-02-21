@@ -6,7 +6,8 @@ IGU para gestionar la red hospedada en windows (hosted (network), crearla, inici
 * Crea la red hospedada (hostednetwork)
 * Inicia la red hospedada
 * Finaliza la red hospedada
+* Comprueba el estado de la red hospedada
 
-En construcción.
+<img src="captura_gestor_red_hospedada.PNG" width="650px">
 
 (Window Builder ha generado el código en espagueti, no "Lazy". Error al configurar el proyecto)
