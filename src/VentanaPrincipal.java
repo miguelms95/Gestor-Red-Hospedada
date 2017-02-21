@@ -22,7 +22,11 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -43,11 +47,12 @@ public class VentanaPrincipal extends JFrame {
 	private JTextField txNombreRed;
 	private JPasswordField passRed;
 	JCheckBox chckbxMostrarPassword;
-	JButton btnCrearRedLocal;
+	JButton btCrearRed;
 	JTextArea textAreaCheck;
 	JButton btnSalir;
-	JButton btCheck;
-	JButton btnEliminarRedWifi;
+	JButton btComprobarRed;
+	JButton btFinalizarRed;
+	JButton btIniciarRed;
 	/**
 	 * Launch the application.
 	 */
@@ -79,7 +84,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		setTitle("Generador de Red Wifi Local");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 537, 387);
+		setBounds(100, 100, 882, 434);
 		setMinimumSize(new Dimension(537, 387));
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -122,7 +127,7 @@ public class VentanaPrincipal extends JFrame {
 		setContentPane(contentPane);
 		
 		JPanel pnCentro = new JPanel();
-		contentPane.add(pnCentro, BorderLayout.CENTER);
+		contentPane.add(pnCentro, BorderLayout.NORTH);
 		pnCentro.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
@@ -130,7 +135,7 @@ public class VentanaPrincipal extends JFrame {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{109, 105, 145, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 20, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -207,25 +212,36 @@ public class VentanaPrincipal extends JFrame {
 		JPanel pnSouth = new JPanel();
 		pnCentro.add(pnSouth, BorderLayout.SOUTH);
 		
-		btnCrearRedLocal = new JButton("Crear red local");
-		btnCrearRedLocal.setMnemonic('c');
-		pnSouth.add(btnCrearRedLocal);
-		btnCrearRedLocal.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btCrearRed = new JButton("Crear red local");
+		btCrearRed.setMnemonic('c');
+		pnSouth.add(btCrearRed);
+		btCrearRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
-		JButton btnIniciarRedLocal = new JButton("Iniciar red local");
-		btnIniciarRedLocal.setMnemonic('i');
-		btnIniciarRedLocal.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		pnSouth.add(btnIniciarRedLocal);
+		btIniciarRed = new JButton("Iniciar red local");
+		btIniciarRed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				execute("start");
+			}
+		});
+		btIniciarRed.setMnemonic('i');
+		btIniciarRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		pnSouth.add(btIniciarRed);
 		
-		btnEliminarRedWifi = new JButton("Finalizar red local");
-		btnEliminarRedWifi.setMnemonic('f');
-		pnSouth.add(btnEliminarRedWifi);
-		btnEliminarRedWifi.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnCrearRedLocal.addActionListener(new ActionListener() {
+		btFinalizarRed = new JButton("Finalizar red local");
+		btFinalizarRed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				execute("stop");
+				System.err.println("STOP");
+			}
+		});
+		btFinalizarRed.setMnemonic('f');
+		pnSouth.add(btFinalizarRed);
+		btFinalizarRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btCrearRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(passRed.getPassword().toString().equals("hola"))
 					System.out.println("BIEN");
-				execute();
+				execute("create");
 			}
 		});
 		
@@ -238,7 +254,7 @@ public class VentanaPrincipal extends JFrame {
 		pnTop.add(lbTitulo);
 		
 		JPanel pnCheck = new JPanel();
-		contentPane.add(pnCheck, BorderLayout.SOUTH);
+		contentPane.add(pnCheck, BorderLayout.CENTER);
 		pnCheck.setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnTxArea = new JPanel();
@@ -246,6 +262,10 @@ public class VentanaPrincipal extends JFrame {
 		pnTxArea.setLayout(new BorderLayout(0, 0));
 		textAreaCheck = new JTextArea();
 		textAreaCheck.setLineWrap(true);
+		textAreaCheck.setFont(new Font("Monospaced", Font.BOLD, 13));
+		textAreaCheck.setForeground(Color.WHITE);
+		textAreaCheck.setBackground(Color.BLACK);
+		textAreaCheck.setEditable(false);
 		textAreaCheck.setWrapStyleWord(true);
 		textAreaCheck.setRows(5);
 		
@@ -256,10 +276,15 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panel_2 = new JPanel();
 		pnTxArea.add(panel_2, BorderLayout.EAST);
 		
-		btCheck = new JButton("Comprobar red");
-		btCheck.setMnemonic('p');
-		btCheck.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		panel_2.add(btCheck);
+		btComprobarRed = new JButton("Comprobar red");
+		btComprobarRed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				execute("check");
+			}
+		});
+		btComprobarRed.setMnemonic('p');
+		btComprobarRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel_2.add(btComprobarRed);
 		
 		JPanel panel_1 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
@@ -285,14 +310,55 @@ public class VentanaPrincipal extends JFrame {
 			passRed.setEchoChar('*');
 		}
 	}
-	private void execute(){
-		String comando = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+String.valueOf(passRed.getPassword())+" keyUsage=persistent";
+	private void execute(String comandoEjecutar){
+		String comando = "";
+		switch (comandoEjecutar) {
+		case "create":
+			comando = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+String.valueOf(passRed.getPassword())+" keyUsage=persistent";
+			break;
+		case "stop":
+			comando = "netsh wlan stop hostednetwork";
+			break;
+		case "start":
+			comando = "netsh wlan start hostednetwork";
+			break;
+		case "check":
+			comando = "netsh wlan show hostednetwork";
+			break;
+		default:
+			break;
+		}
+		
+		//String comando = "start chrome";
+		StringBuffer output = null;
+		
 		try {
-			Runtime.getRuntime().exec(comando);
+			output = new StringBuffer();
+			Process p = Runtime.getRuntime().exec("cmd /c "+comando);
+			p.waitFor();
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream(),"CP437"));
+			String line = "";
+			while ((line= reader.readLine())!=null){
+				output.append(line + "\n");
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		textAreaCheck.setText(comando);
+		
+		textAreaCheck.setText(textAreaCheck.getText()+"--> " + comando+"\n");
+		String respuesta = output.toString();
+		byte[] ptext;
+		try {
+			ptext = respuesta.getBytes("UTF-8");
+			textAreaCheck.append(new String(ptext,Charset.forName("UTF-8")));
+		} catch (UnsupportedEncodingException e) {
+			textAreaCheck.append(e.getStackTrace().toString());
+		}
+		
 	}
 }
