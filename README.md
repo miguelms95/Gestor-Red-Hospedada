@@ -9,4 +9,4 @@ IGU para gestionar la red hospedada en windows (hosted (network), crearla, inici
 
 En construcción.
 
-(Window Builder ha generado el código en espagueti, no "Lazy", error al configurar el proyecto)
+(Window Builder ha generado el código en espagueti, no "Lazy". Error al configurar el proyecto)
