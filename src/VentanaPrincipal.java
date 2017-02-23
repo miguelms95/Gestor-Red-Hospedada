@@ -40,6 +40,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -307,14 +310,24 @@ public class VentanaPrincipal extends JFrame {
 		if(chckbxMostrarPassword.isSelected()){
 			passRed.setEchoChar((char) 0);
 		}else{
-			passRed.setEchoChar('*');
+			passRed.setEchoChar('\u25CF');
 		}
 	}
 	private void execute(String comandoEjecutar){
+		
 		String comando = "";
 		switch (comandoEjecutar) {
 		case "create":
-			comando = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+String.valueOf(passRed.getPassword())+" keyUsage=persistent";
+			MessageDigest m = null;
+			try {
+				m = MessageDigest.getInstance("MD5");
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			String pass = String.valueOf(passRed.getPassword());
+			String print = Base64.getEncoder().encodeToString(m.digest(pass.getBytes()));
+			comando = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+print.substring(0, 10)+" (encryted) keyUsage=persistent";
 			break;
 		case "stop":
 			comando = "netsh wlan stop hostednetwork";
