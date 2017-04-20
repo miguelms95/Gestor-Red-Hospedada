@@ -107,11 +107,21 @@ public class VentanaPrincipal extends JFrame {
 		mnGenerador.add(mntmCrearRedLocal);
 		
 		JMenuItem mntmIniciarRedLocal = new JMenuItem("Iniciar red local");
+		mntmIniciarRedLocal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				execute("start");
+			}
+		});
 		mntmIniciarRedLocal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
 		mntmIniciarRedLocal.setMnemonic('i');
 		mnGenerador.add(mntmIniciarRedLocal);
 		
 		JMenuItem mntmFinalizarRedLocal = new JMenuItem("Finalizar red local");
+		mntmFinalizarRedLocal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				execute("stop");
+			}
+		});
 		mntmFinalizarRedLocal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
 		mnGenerador.add(mntmFinalizarRedLocal);
 		
@@ -239,7 +249,7 @@ public class VentanaPrincipal extends JFrame {
 		btFinalizarRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				execute("stop");
-				System.err.println("STOP");
+				//System.err.println("STOP");
 			}
 		});
 		btFinalizarRed.setMnemonic('f');
