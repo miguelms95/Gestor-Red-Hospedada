@@ -87,7 +87,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		setTitle("Generador de Red Wifi Local");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 882, 434);
+		setBounds(100, 100, 882, 543);
 		setMinimumSize(new Dimension(537, 387));
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -245,6 +245,7 @@ public class VentanaPrincipal extends JFrame {
 				if(passRed.getPassword().toString().equals("hola"))
 					System.out.println("BIEN");
 				execute("create");
+				passRed.setText("");
 			}
 		});
 		
