@@ -367,7 +367,7 @@ public class VentanaPrincipal extends JFrame {
 			e.printStackTrace();
 		}
 		
-		textAreaCheck.setText(textAreaCheck.getText()+"--> " + comando+"\n");
+		textAreaCheck.setText(textAreaCheck.getText()+"--> " + comandoImprimir +"\n");
 		String respuesta = output.toString();
 		byte[] ptext;
 		try {
