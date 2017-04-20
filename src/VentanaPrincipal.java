@@ -87,7 +87,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		setTitle("Generador de Red Wifi Local");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 882, 543);
+		setBounds(100, 100, 716, 543);
 		setMinimumSize(new Dimension(587, 387));
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -303,9 +303,6 @@ public class VentanaPrincipal extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		pnTxArea.add(scrollPane);
 		scrollPane.setViewportView(textAreaCheck);
-		
-		JPanel panel_2 = new JPanel();
-		pnTxArea.add(panel_2, BorderLayout.EAST);
 		
 		JPanel panel_1 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
