@@ -316,6 +316,7 @@ public class VentanaPrincipal extends JFrame {
 	private void execute(String comandoEjecutar){
 		
 		String comando = "";
+		String comandoImprimir = "";
 		switch (comandoEjecutar) {
 		case "create":
 			MessageDigest m = null;
@@ -327,7 +328,8 @@ public class VentanaPrincipal extends JFrame {
 			}
 			String pass = String.valueOf(passRed.getPassword());
 			String print = Base64.getEncoder().encodeToString(m.digest(pass.getBytes()));
-			comando = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+print.substring(0, 10)+" (encryted) keyUsage=persistent";
+			comandoImprimir = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+print.substring(0, 12)+" (encryted) keyUsage=persistent";
+			comando = "netsh wlan set hostednetwork mode=allow ssid="+txNombreRed.getText()+" key="+pass+" keyUsage=persistent";
 			break;
 		case "stop":
 			comando = "netsh wlan stop hostednetwork";
@@ -342,6 +344,8 @@ public class VentanaPrincipal extends JFrame {
 			break;
 		}
 		
+		if(comandoEjecutar != "create")
+			comandoImprimir = comando;
 		//String comando = "start chrome";
 		StringBuffer output = null;
 		
