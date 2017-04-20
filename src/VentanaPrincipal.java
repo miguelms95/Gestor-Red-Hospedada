@@ -88,7 +88,7 @@ public class VentanaPrincipal extends JFrame {
 		setTitle("Generador de Red Wifi Local");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 882, 543);
-		setMinimumSize(new Dimension(537, 387));
+		setMinimumSize(new Dimension(587, 387));
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -97,6 +97,11 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(mnGenerador);
 		
 		JMenuItem mntmCrearRedLocal = new JMenuItem("Crear red local");
+		mntmCrearRedLocal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				crearred();
+			}
+		});
 		mntmCrearRedLocal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mntmCrearRedLocal.setMnemonic('c');
 		mnGenerador.add(mntmCrearRedLocal);
@@ -240,12 +245,24 @@ public class VentanaPrincipal extends JFrame {
 		btFinalizarRed.setMnemonic('f');
 		pnSouth.add(btFinalizarRed);
 		btFinalizarRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		JLabel label = new JLabel(" | ");
+		pnSouth.add(label);
+		
+		btComprobarRed = new JButton("Comprobar red");
+		btComprobarRed.setForeground(Color.BLUE);
+		btComprobarRed.setBackground(new Color(240, 240, 240));
+		pnSouth.add(btComprobarRed);
+		btComprobarRed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				execute("check");
+			}
+		});
+		btComprobarRed.setMnemonic('p');
+		btComprobarRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btCrearRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(passRed.getPassword().toString().equals("hola"))
-					System.out.println("BIEN");
-				execute("create");
-				passRed.setText("");
+				crearred();
 			}
 		});
 		
@@ -279,16 +296,6 @@ public class VentanaPrincipal extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		pnTxArea.add(panel_2, BorderLayout.EAST);
-		
-		btComprobarRed = new JButton("Comprobar red");
-		btComprobarRed.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				execute("check");
-			}
-		});
-		btComprobarRed.setMnemonic('p');
-		btComprobarRed.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		panel_2.add(btComprobarRed);
 		
 		JPanel panel_1 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
@@ -378,5 +385,11 @@ public class VentanaPrincipal extends JFrame {
 			textAreaCheck.append(e.getStackTrace().toString());
 		}
 		
+	}
+	private void crearred(){
+		if(passRed.getPassword().toString().equals("hola"))
+			System.out.println("BIEN");
+		execute("create");
+		passRed.setText("");
 	}
 }
