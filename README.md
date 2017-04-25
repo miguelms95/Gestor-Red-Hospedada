@@ -10,4 +10,4 @@ IGU para gestionar la red hospedada en windows (hosted (network), crearla, inici
 
 <img src="captura_gestor_red_hospedada_v2.PNG" width="650px">
 
-(Window Builder ha generado el código en espagueti, no "Lazy". Error al configurar el proyecto)
+Window Builder ha generado el código en espagueti, no "Lazy". Error al configurar el proyecto al inicio, así que así se queda de momento. Los objetos de la interfaz están declarados globales para poder interactuar entre ellos y salvar el modo espagueti.
