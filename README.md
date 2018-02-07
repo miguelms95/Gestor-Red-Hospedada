@@ -1,7 +1,7 @@
 # Gestor Red Hospedada
-Controla la red hospedada fácilmente desde una interfaz gráfica.
+Controla la red hospedada fácilmente desde una interfaz gráfica. ¿Tus amigos quieren jugar en una conexión local y no tienen internet? Utilizar una red hospedada es la solución, y para que no se pierdan entre comandos he desarrollado esta IGU.
 
-IGU para gestionar la red hospedada en windows (hosted (network), crearla, iniciarla y pararla.
+Esta aplicación gestiona la red hospedada en windows (hostednetwork) las funciones disponibles son:
 
 * Crea la red hospedada (hostednetwork)
 * Inicia la red hospedada
